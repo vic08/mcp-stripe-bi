@@ -1,0 +1,64 @@
+{
+  "name": "@vic08/mcp-stripe-bi",
+  "version": "0.1.0",
+  "description": "Stripe Business Intelligence MCP server — MRR, churn, cohorts, LTV, and SaaS revenue analytics",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "mcp-stripe-bi": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build"
+  },
+  "keywords": [
+    "mcp",
+    "stripe",
+    "analytics",
+    "mrr",
+    "churn",
+    "saas",
+    "revenue",
+    "bi"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vic08/mcp-stripe-bi"
+  },
+  "homepage": "https://github.com/vic08/mcp-stripe-bi#readme",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "stripe": "^22.0.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^25.5.2",
+    "@vitest/coverage-v8": "^4.1.2",
+    "eslint": "^10.2.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.1",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.58.0",
+    "vitest": "^4.1.2"
+  }
+}
