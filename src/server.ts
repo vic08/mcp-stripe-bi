@@ -1,6 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import type { StripeService } from './services/stripe.service.js';
+import { StripeService } from './services/stripe.service.js';
 import {
   registerRevenueTools,
   registerChurnTools,
@@ -9,7 +9,9 @@ import {
   registerTransactionTools,
 } from './tools/index.js';
 
-export function createServer(stripeService: StripeService): McpServer {
+export function createServer(stripeService: StripeService | null | undefined): McpServer {
+  // Use a placeholder service if no key provided — tools will fail with auth error at runtime
+  const stripe = stripeService ?? new StripeService('sk_not_configured');
   const server = new McpServer({
     name: 'mcp-stripe-bi',
     version: '0.1.0',
@@ -70,11 +72,11 @@ Identify growth drivers, risks, and opportunities.`,
   );
 
   // Register all tool groups
-  registerRevenueTools(server, stripeService);
-  registerChurnTools(server, stripeService);
-  registerCustomerTools(server, stripeService);
-  registerFinancialTools(server, stripeService);
-  registerTransactionTools(server, stripeService);
+  registerRevenueTools(server, stripe);
+  registerChurnTools(server, stripe);
+  registerCustomerTools(server, stripe);
+  registerFinancialTools(server, stripe);
+  registerTransactionTools(server, stripe);
 
   return server;
 }

@@ -10,14 +10,8 @@ async function main() {
   // Redirect console.log to stderr to prevent corrupting MCP JSON-RPC on stdout
   console.log = (...args: unknown[]) => console.error('[LOG]', ...args);
 
-  const apiKey = process.env['STRIPE_API_KEY'];
-  if (!apiKey) {
-    console.error('Error: STRIPE_API_KEY environment variable is required.');
-    console.error('Set it to your Stripe secret key or a restricted key with read-only access.');
-    process.exit(1);
-  }
-
-  const stripeService = new StripeService(apiKey);
+  const apiKey = process.env['STRIPE_API_KEY'] ?? '';
+  const stripeService = apiKey ? new StripeService(apiKey) : null;
   const mcpServer = createServer(stripeService);
 
   const port = process.env['PORT'];

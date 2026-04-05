@@ -1,6 +1,6 @@
 version: 1
 name: mcp-stripe-bi
-description: "Stripe Business Intelligence MCP server — MRR, churn, cohorts, LTV, and SaaS revenue analytics. 20 tools."
+description: 'Stripe Business Intelligence MCP server — MRR, churn, cohorts, LTV, and SaaS revenue analytics. 20 tools.'
 runtime: typescript
 entry: src/index.ts
 
