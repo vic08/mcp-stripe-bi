@@ -11,3 +11,8 @@ build:
 startCommand:
   type: http
   command: PORT=8080 node dist/index.js
+
+credentials:
+  - name: STRIPE_API_KEY
+    description: Stripe secret key or restricted key with read access
+    required: true

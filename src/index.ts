@@ -12,18 +12,12 @@ async function main() {
 
   const apiKey = process.env['STRIPE_API_KEY'] ?? '';
   const stripeService = apiKey ? new StripeService(apiKey) : null;
-  const mcpServer = createServer(stripeService);
 
   const port = process.env['PORT'];
 
   if (port) {
     // HTTP mode for hosted deployment
-    const transport = new StreamableHTTPServerTransport({
-      sessionIdGenerator: undefined,
-    });
-
-    await mcpServer.connect(transport);
-
+    // In stateless mode, each request needs a fresh transport + server pair
     const serverCard = {
       name: 'mcp-stripe-bi',
       description:
@@ -37,6 +31,12 @@ async function main() {
     const httpServer = http.createServer(async (req, res) => {
       if (req.url === '/mcp' || req.url === '/') {
         try {
+          const transport = new StreamableHTTPServerTransport({
+            sessionIdGenerator: undefined,
+          });
+          const server = createServer(stripeService);
+          res.on('close', () => transport.close());
+          await server.connect(transport);
           await transport.handleRequest(req, res);
         } catch {
           if (!res.headersSent) {
@@ -61,6 +61,7 @@ async function main() {
     });
   } else {
     // stdio mode for local usage (Claude Desktop, Cline, etc.)
+    const mcpServer = createServer(stripeService);
     const transport = new StdioServerTransport();
     await mcpServer.connect(transport);
   }
